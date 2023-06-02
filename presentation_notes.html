@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>presentation_notes.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>#7ujIntro to Graphql</p>
+<h2 id="from-the-get-go">From the get go</h2>
+<ul>
+<li>graphql is a <strong>communication standard</strong></li>
+<li>graphql is not a programing language</li>
+<li>objective:
+<blockquote>
+<p>&quot;...for <strong>describing</strong> the capabilities and requirements
+of data models for client-server applications&quot;</p>
+</blockquote>
+</li>
+<li><strong>self-documented</strong>:
+<blockquote>
+<p>Ensure that all of your data is statically typed and these types inform what queries the schema supports.</p>
+</blockquote>
+</li>
+<li><strong>included deprecation mechanism</strong>
+<blockquote>
+<p>Reduce the need for breaking changes, but utilize a built-in mechanism for deprecations when you need to.</p>
+</blockquote>
+</li>
+<li><strong>data source Agnostic</strong>
+&quot;GraphQL does not mandate a particular programming language or storage system for application services that implement it&quot;</li>
+<li><strong>you get what you ask for</strong>:
+<ul>
+<li>GraphQL queries are <strong>Field Sets</strong></li>
+<li>field -&gt; function <strong>field resolver</strong></li>
+</ul>
+</li>
+</ul>
+<p>GraphQL <strong>principles</strong>:</p>
+<ol>
+<li>Product-centric: <em><strong>GraphQL is unapologetically driven by the requirements of views and the front-end engineers that write them</strong></em>.
+<ul>
+<li>&quot;Client First&quot;, me, 2023</li>
+<li>&quot;designed to build client applications by providing an intuitive and flexible syntax and system for describing their data requirements and interactions.&quot;, GraphQL Spec, 2021</li>
+</ul>
+</li>
+<li>Hierarchical</li>
+<li>Strong-typing</li>
+<li>Client-specified response</li>
+<li>Introspective</li>
+</ol>
+<h2 id="architecture">Architecture</h2>
+<figure>
+    <img src="./images/arch_lvl_1.png"
+         alt="Simple Graphql Architecture Diagram: graphql server and db in same vm serving mobile and web clients">
+    <figcaption>
+    GraphQL server and db in same vm serving mobile and web clients [<a href="#graphql_spec">1</a>]
+    </figcaption>
+</figure>
+<figure>
+    <img src="./images/arch_lvl_2.png"
+         alt="More Complex Graphql Architecture Diagram: graphql server in dedicated 'orchestator' node in microservice arch with 3 different data sources">
+    <figcaption>
+    graphql server in dedicated 'orchestator' node in microservice arch with 3 different data sources [<a href="#graphql_arch_article2">3</a>]
+    </figcaption>
+</figure>
+<figure>
+    <img src="./images/arch_lvl_3.png"
+         alt="Hybrid Graphql Architecture Diagram: graphql server  with db in same vm while also orchestrating with two external data sources.">
+    <figcaption>
+    graphql server  with db in same vm while also orchestrating with two external data sources [<a href="#graphql_arch_article2">3</a>]
+    </figcaption>
+</figure>
+<h3 id="authentication">Authentication?</h3>
+<ul>
+<li>TODO elaborate</li>
+</ul>
+<figure>
+    <img src="./images/arch_w_auth.png"
+         alt="">
+    <figcaption>
+     [<a href="TODO">5</a>]
+    </figcaption>
+</figure>
+~~ææ~~
+### Stitching
+<p>TODO elaborate</p>
+<ul>
+<li><a href="https://the-guild.dev/graphql/stitching"></a></li>
+<li><a href="https://www.apollographql.com/blog/backend/graphql-schema-stitching/"></a></li>
+</ul>
+<h2 id="performance">Performance</h2>
+<p>Dado que:</p>
+<ul>
+<li><s>1 field -&gt; ææ1 resolver function</s></li>
+<li>data batching on  the server in stead of client -&gt; less http calls for same data</li>
+<li>catered query for client -&gt; allows for mutiple different clients, same endpoint fullfills different needs</li>
+</ul>
+<p>Entonces: ==&gt;
+performance improvements in frontend:
+<img src="./images/catered_queries.png" alt="image">
+<img src="./images/song_example_rest.png" alt="image">
+<img src="./images/song_example_graphql.png" alt="image"></p>
+<hr>
+<p>if</p>
+<blockquote>
+<p>repeatedly load data from your database.</p>
+</blockquote>
+<p>Then,</p>
+<blockquote>
+<p>implement batching technique or DataLoader.</p>
+</blockquote>
+<hr>
+<h2 id="language">Language</h2>
+<p>Schema Definition:</p>
+<ul>
+<li>
+<p>type</p>
+<pre class="hljs"><code><div>type Person {
+    name: String
+    age: Int
+    picture: Url
+}
+</div></code></pre>
+</li>
+<li>
+<p>interface</p>
+<pre class="hljs"><code><div>interface Book {
+    title: String!
+    author: Author!
+}
+type Textbook implements Book {
+    title: String! # Must be present
+    author: Author! # Must be present
+    courses: [Course!]!
+}
+</div></code></pre>
+</li>
+<li>
+<p>union</p>
+<pre class="hljs"><code><div>union SearchResult = Book | Author
+
+type Query {
+    search(contains: String): [SearchResult!]
+}
+
+query GetSearchResults {
+    search(contains: &quot;Shakespeare&quot;) {
+        __typename
+        ... on Book {
+        title
+        }
+        ... on Author {
+        name
+        }
+    }
+}
+</div></code></pre>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"data"</span>: {
+        <span class="hljs-attr">"search"</span>: [
+        {
+            <span class="hljs-attr">"__typename"</span>: <span class="hljs-string">"Book"</span>,
+            <span class="hljs-attr">"title"</span>: <span class="hljs-string">"The Complete Works of William Shakespeare"</span>
+        },
+        {
+            <span class="hljs-attr">"__typename"</span>: <span class="hljs-string">"Author"</span>,
+            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"William Shakespeare"</span>
+        }
+        ]
+    }
+}
+</div></code></pre>
+</li>
+<li>
+<p>enum</p>
+<pre class="hljs"><code><div>enum CardinalDirection {
+NORTH
+EAST
+SOUTH
+WEST
+}
+</div></code></pre>
+</li>
+<li>
+<p>input objects</p>
+</li>
+<li>
+<p>non-null
+``` name: String! ``</p>
+</li>
+<li>
+<p>Field Arguments</p>
+<pre class="hljs"><code><div>type Person {
+    name: String
+    picture(size: Int): Url
+}
+{
+    name
+    picture(size: 600)
+}
+</div></code></pre>
+</li>
+<li>
+<p>query: a read-only fetch.</p>
+<pre class="hljs"><code><div>type Query {
+    books: [Book!]!
+    }
+    query GetBooks {
+    books {
+        title
+        author
+    }
+}
+</div></code></pre>
+</li>
+<li>
+<p>mutation:  a write followed by a fetch.</p>
+<pre class="hljs"><code><div>mutation {
+    likeStory(storyID: 12345) {
+        story {
+            likeCount
+        }
+    }
+}
+mutation {
+    sendEmail(message: &quot;Hello,\n  World!\n&quot;)
+}
+</div></code></pre>
+</li>
+<li>
+<p>subscription: a long-lived request that fetches data in response to source events.</p>
+<ul>
+<li>web sockets</li>
+<li>support for EDD</li>
+</ul>
+</li>
+</ul>
+<h4 id="fields-and-field-resolvers">Fields and Field Resolvers</h4>
+<ul>
+<li>
+<p><a href="https://github.com/graphql/graphql-spec/blob/51337a9b820e296fa7d03ae77d534cb4b247c201/spec/Section%202%20--%20Language.md?plain=1#L326">Selection Set</a></p>
+</li>
+<li>
+<p><a href="https://github.com/graphql/graphql-spec/blob/51337a9b820e296fa7d03ae77d534cb4b247c201/spec/Section%202%20--%20Language.md?plain=1#L463">Field Alias</a></p>
+</li>
+</ul>
+<hr>
+<h3 id="fragments">Fragments</h3>
+<ul>
+<li>primary unit of composition</li>
+<li>recycle and reuse common pieces of queries</li>
+<li>inline fragments ???</li>
+</ul>
+<pre class="hljs"><code><div>query withFragments {
+  user(id: 4) {
+    friends(first: 10) {
+      ...friendFields
+    }
+    mutualFriends(first: 10) {
+      ...friendFields
+    }
+  }
+}
+
+fragment friendFields on User {
+  id
+  name
+  profilePic(size: 50)
+}
+</div></code></pre>
+<h2 id="instrospection">Instrospection</h2>
+<pre class="hljs"><code><div>{
+  __type(name: &quot;Droid&quot;) {
+    name
+    fields {
+      name
+      type {
+        name
+        kind
+      }
+    }
+  }
+}
+{
+  &quot;data&quot;: {
+    &quot;__type&quot;: {
+      &quot;name&quot;: &quot;Droid&quot;,
+      &quot;fields&quot;: [
+        {
+          &quot;name&quot;: &quot;id&quot;,
+          &quot;type&quot;: {
+            &quot;name&quot;: null,
+            &quot;kind&quot;: &quot;NON_NULL&quot;
+          }
+        },
+        {
+          &quot;name&quot;: &quot;name&quot;,
+          &quot;type&quot;: {
+            &quot;name&quot;: null,
+            &quot;kind&quot;: &quot;NON_NULL&quot;
+          }
+        },
+        {
+          &quot;name&quot;: &quot;friends&quot;,
+          &quot;type&quot;: {
+            &quot;name&quot;: null,
+            &quot;kind&quot;: &quot;LIST&quot;
+          }
+        },
+        {
+          &quot;name&quot;: &quot;friendsConnection&quot;,
+          &quot;type&quot;: {
+            &quot;name&quot;: null,
+            &quot;kind&quot;: &quot;NON_NULL&quot;
+          }
+        },
+        {
+          &quot;name&quot;: &quot;appearsIn&quot;,
+          &quot;type&quot;: {
+            &quot;name&quot;: null,
+            &quot;kind&quot;: &quot;NON_NULL&quot;
+          }
+        },
+        {
+          &quot;name&quot;: &quot;primaryFunction&quot;,
+          &quot;type&quot;: {
+            &quot;name&quot;: &quot;String&quot;,
+            &quot;kind&quot;: &quot;SCALAR&quot;
+          }
+        }
+      ]
+    }
+  }
+}
+</div></code></pre>
+<h2 id="sources">Sources</h2>
+<ol>
+<li><a id='graphql_spec'><a href="https://spec.graphql.org/October2021/">GraphQL Spec October2021</a></a></li>
+<li><a id='graphql_arch_article1'><a href="https://www.howtographql.com/basics/3-big-picture/%3E">howtographql.com: Big Picture (Architecture)</a></a></li>
+<li><a id='graphql_arch_article2'><a href="https://servian.dev/solution-architects-guide-to-graphql-2d513316e424">Solution Architects Guide to GraphQL</a></a></li>
+<li><a id='graphql_intro'><a href="https://graphql.org/learn/">Introduction to GraphQL</a></a></li>
+<li>https://chanakaudaya.medium.com/graphql-based-solution-architecture-patterns-8905de6ff87e</li>
+<li><a href="https://graphql.org/learn/introspection/">GraphQL.org: Instrospection</a></li>
+<li><a href="https://www.apollographql.com/docs/apollo-server/schema/unions-interfaces/">Apollo Server: Union and Interfaces</a></li>
+<li><a href="https://levelup.gitconnected.com/12-microservices-pattern-i-wish-i-knew-before-the-system-design-interview-5c35919f16a2">12 Microservices Patterns I Wish I Knew Before the System Design Interview</a></li>
+</ol>
+
+</body>
+</html>

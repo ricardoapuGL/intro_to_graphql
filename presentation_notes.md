@@ -1,4 +1,4 @@
-# Intro to Graphql
+#7ujIntro to Graphql
 
 ## From the get go
 
@@ -64,7 +64,7 @@ GraphQL **principles**:
      [<a href="TODO">5</a>]
     </figcaption>
 </figure>
-
+~~ææ~~
 ### Stitching
 
 TODO elaborate
@@ -76,7 +76,7 @@ TODO elaborate
 
 Dado que:
 
-- 1 field -> 1 resolver function
+- ~~1 field -> ææ1 resolver function~~
 - data batching on  the server in stead of client -> less http calls for same data
 - catered query for client -> allows for mutiple different clients, same endpoint fullfills different needs
 
@@ -183,7 +183,7 @@ Schema Definition:
     ```graphql
     type Person {
         name: String
-        picture(size: Int): Url
+        picture(size: Int):  
     }
     {
         name
