@@ -53,17 +53,24 @@ GraphQL **principles**:
     </figcaption>
 </figure>
 
+### Authentication?
 
-Authentication?
-
+- TODO elaborate
 
 <figure>
-    <img src="./images/arch_w_auth.webp"
+    <img src="./images/arch_w_auth.png"
          alt="">
     <figcaption>
      [<a href="TODO">5</a>]
     </figcaption>
 </figure>
+
+### Stitching
+
+TODO elaborate
+
+- [](https://the-guild.dev/graphql/stitching)
+- [](https://www.apollographql.com/blog/backend/graphql-schema-stitching/)
 
 ## Performance
 
@@ -75,10 +82,10 @@ Dado que:
 
 Entonces: ==>
 performance improvements in frontend:
-![image](./images/graphql_catered_queries.webp)
-![image](./images/song_example_rest.webp
+![image](./images/catered_queries.png)
+![image](./images/song_example_rest.png
 )
-![image](./images/song_example_graphql.webp)
+![image](./images/song_example_graphql.png)
 
 ____
 if
@@ -327,3 +334,4 @@ fragment friendFields on User {
 5. https://chanakaudaya.medium.com/graphql-based-solution-architecture-patterns-8905de6ff87e
 6. [GraphQL.org: Instrospection](https://graphql.org/learn/introspection/)
 7. [Apollo Server: Union and Interfaces](https://www.apollographql.com/docs/apollo-server/schema/unions-interfaces/)
+8. [12 Microservices Patterns I Wish I Knew Before the System Design Interview](https://levelup.gitconnected.com/12-microservices-pattern-i-wish-i-knew-before-the-system-design-interview-5c35919f16a2)
