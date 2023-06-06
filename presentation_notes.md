@@ -1,4 +1,4 @@
-#7ujIntro to Graphql
+# Graphql 101
 
 ## From the get go
 
@@ -27,7 +27,178 @@ GraphQL **principles**:
 4. Client-specified response
 5. Introspective
 
-## Architecture
+## Overview
+
+Its just HTTPS, auth whatever you like, client and server interact throught POST json body:
+
+- query: a read-only fetch.
+
+    ```graphql
+    type Query {
+        books: [Book!]!
+    }
+    query GetBooks {
+      books {
+          title
+          author
+      }
+    }
+    ```
+
+- mutation:  a write followed by a fetch.
+
+    ```graphql
+    mutation {
+        likeStory(storyID: 12345) {
+            story {
+                likeCount
+            }
+        }
+    }
+    ```
+
+- subscription: a long-lived request that fetches data in response to source events.
+    - web sockets generally used
+    - supports EventDriven archs
+
+### (Partial) Language Overview
+
+For completeness, check <a href="#graphql_arch_article2">the GraphQL Spec Document</a>.
+
+- type
+
+    ```graphql
+    type Person {
+        name: String
+        birthdate: Date
+        picture: Url
+    }
+    ```
+
+- interface
+
+    ```graphql
+    
+    interface Person {
+        name: String!
+        birthdate: Date!
+        picture: Url
+    }
+    type Book {
+        title: String!
+        author: Author!
+        publication_date: Date!
+    }
+    type Author implements Person {
+        name: String!
+        birthdate: Date!
+        picture: Url
+        books: [Book]
+    }
+    ```
+
+- union
+
+    ```graphql
+    union SearchResult = Book | Author
+
+    ```
+
+- enum
+
+    ```graphql
+    enum CardinalDirection {
+      NORTH
+      EAST
+      SOUTH
+      WEST
+    }
+    ```
+
+- non-null: `name: String!`
+
+- Field Arguments
+
+    ```graphql
+    type Person {
+        name: String
+        picture(size: Int):  
+    }
+    {
+        name
+        picture(size: 600)
+    }
+    ```
+
+- input objects: 
+
+    ```graphql
+      input Point2D {
+        x: Float
+        y: Float
+      }
+
+      {
+        closestBathrooms(from: Point2D): [Bathroom]
+      }
+    ```
+
+### Fields and Field Resolvers
+
+- [Selection Set](https://github.com/graphql/graphql-spec/blob/51337a9b820e296fa7d03ae77d534cb4b247c201/spec/Section%202%20--%20Language.md?plain=1#L326)
+
+- [Field Alias](https://github.com/graphql/graphql-spec/blob/51337a9b820e296fa7d03ae77d534cb4b247c201/spec/Section%202%20--%20Language.md?plain=1#L463)
+
+____
+
+### Fragments
+
+- primary unit of composition
+- recycle and reuse common pieces of queries
+- inline fragments ???
+
+  ```graphql
+  type User {
+    # a bunch of fields...
+  }
+  type Adress {
+    # like 100 fields, i know, crazy.
+  }
+
+  fragment friendFields on User {
+    id
+    name
+    profilePic(size: 50)
+  }
+
+  fragment simpleAddress on Address {
+    line1
+    line2
+    city
+    country
+  }
+
+  # QUERY:
+  {
+    user(id: "4") {
+      friends(first: 10) {
+        ...friendFields
+        address {
+          ...simpleAddress
+        }
+      }
+      mutualFriends(first: 10) {
+        ...friendFields
+        address {
+          ...simpleAddress
+        }
+      }
+    }
+  }
+      
+  ```
+
+## Architecture Examples
 
 <figure>
     <img src="./images/arch_lvl_1.png"
@@ -53,215 +224,58 @@ GraphQL **principles**:
     </figcaption>
 </figure>
 
-### Authentication?
+<figure>
+    <img src="./images/arch_lvl_4.png"
+         alt="">
+    <figcaption>
+    GraphQL Api Gateway example[<a href="#graphql_arch_article2">3</a>]
+    </figcaption>
+</figure>
 
-- TODO elaborate
+
+<figure>
+    <img src="./images/BFF_diagram.png"
+         alt="">
+    <figcaption>
+    Backend For Frontend
+    </figcaption>
+</figure>
+
+### Authentication
+
+A secure Server has some sort of Authentication:
+
+- Basic Auth: base64(user:password) (just dont use this)
+    `curl --header "Authorization: Basic am9objpzZWNyZXQ=" my-website.com`
+- Bearer Tokens:
+    - JSON Web Tokens (JWT, normal RSA in payload + signature), header , payload + signature
+    - OAuth 2.0: 1 Authorization (email+pass, 3rdP Identity Provider) then Bearer is Session token.
 
 <figure>
     <img src="./images/arch_w_auth.png"
          alt="">
     <figcaption>
-     [<a href="TODO">5</a>]
+      An Authentication Layer in front of the GraphQL service.
     </figcaption>
 </figure>
-~~ææ~~
-### Stitching
 
-TODO elaborate
+### Performance vs REST
 
-- [](https://the-guild.dev/graphql/stitching)
-- [](https://www.apollographql.com/blog/backend/graphql-schema-stitching/)
-
-## Performance
-
-Dado que:
-
-- ~~1 field -> ææ1 resolver function~~
+- 1 field -> 1 resolver function
 - data batching on  the server in stead of client -> less http calls for same data
 - catered query for client -> allows for mutiple different clients, same endpoint fullfills different needs
 
-Entonces: ==>
 performance improvements in frontend:
 ![image](./images/catered_queries.png)
 ![image](./images/song_example_rest.png
 )
 ![image](./images/song_example_graphql.png)
 
-____
-if
-> repeatedly load data from your database.
-
-Then,
-> implement batching technique or DataLoader.
-____
-
-## Language
-
-Schema Definition:
-
-- type
-
-    ```graphql
-    type Person {
-        name: String
-        age: Int
-        picture: Url
-    }
-    ```
-
-- interface
-
-    ```graphql
-    interface Book {
-        title: String!
-        author: Author!
-    }
-    type Textbook implements Book {
-        title: String! # Must be present
-        author: Author! # Must be present
-        courses: [Course!]!
-    }
-    ```
-
-- union
-
-    ```graphql
-    union SearchResult = Book | Author
-
-    type Query {
-        search(contains: String): [SearchResult!]
-    }
-
-    query GetSearchResults {
-        search(contains: "Shakespeare") {
-            __typename
-            ... on Book {
-            title
-            }
-            ... on Author {
-            name
-            }
-        }
-    }
-    ```
-
-    ```json
-    {
-        "data": {
-            "search": [
-            {
-                "__typename": "Book",
-                "title": "The Complete Works of William Shakespeare"
-            },
-            {
-                "__typename": "Author",
-                "name": "William Shakespeare"
-            }
-            ]
-        }
-    }
-    ```
-
-- enum
-
-    ```graphql
-    enum CardinalDirection {
-    NORTH
-    EAST
-    SOUTH
-    WEST
-    }
-    ```
-
-- input objects
-
-- non-null
-    ``` name: String! ``
-
-- Field Arguments
-
-    ```graphql
-    type Person {
-        name: String
-        picture(size: Int):  
-    }
-    {
-        name
-        picture(size: 600)
-    }
-    ```
-
-- query: a read-only fetch.
-
-    ```graphql
-    type Query {
-        books: [Book!]!
-        }
-        query GetBooks {
-        books {
-            title
-            author
-        }
-    }
-    ```
-
-- mutation:  a write followed by a fetch.
-
-    ```graphql
-    mutation {
-        likeStory(storyID: 12345) {
-            story {
-                likeCount
-            }
-        }
-    }
-    mutation {
-        sendEmail(message: "Hello,\n  World!\n")
-    }
-    ```
-
-- subscription: a long-lived request that fetches data in response to source events.
-    - web sockets
-    - support for EDD
-
-#### Fields and Field Resolvers
-
-- [Selection Set](https://github.com/graphql/graphql-spec/blob/51337a9b820e296fa7d03ae77d534cb4b247c201/spec/Section%202%20--%20Language.md?plain=1#L326)
-
-- [Field Alias](https://github.com/graphql/graphql-spec/blob/51337a9b820e296fa7d03ae77d534cb4b247c201/spec/Section%202%20--%20Language.md?plain=1#L463)
-
-____
-
-### Fragments
-
-- primary unit of composition
-- recycle and reuse common pieces of queries
-- inline fragments ???
-
-```graphql
-query withFragments {
-  user(id: 4) {
-    friends(first: 10) {
-      ...friendFields
-    }
-    mutualFriends(first: 10) {
-      ...friendFields
-    }
-  }
-}
-
-fragment friendFields on User {
-  id
-  name
-  profilePic(size: 50)
-}
-```
-
 ## Instrospection
 
-```
+```graphql
 {
-  __type(name: "Droid") {
+  __type(name: "Book") {
     name
     fields {
       name
@@ -272,66 +286,20 @@ fragment friendFields on User {
     }
   }
 }
-{
-  "data": {
-    "__type": {
-      "name": "Droid",
-      "fields": [
-        {
-          "name": "id",
-          "type": {
-            "name": null,
-            "kind": "NON_NULL"
-          }
-        },
-        {
-          "name": "name",
-          "type": {
-            "name": null,
-            "kind": "NON_NULL"
-          }
-        },
-        {
-          "name": "friends",
-          "type": {
-            "name": null,
-            "kind": "LIST"
-          }
-        },
-        {
-          "name": "friendsConnection",
-          "type": {
-            "name": null,
-            "kind": "NON_NULL"
-          }
-        },
-        {
-          "name": "appearsIn",
-          "type": {
-            "name": null,
-            "kind": "NON_NULL"
-          }
-        },
-        {
-          "name": "primaryFunction",
-          "type": {
-            "name": "String",
-            "kind": "SCALAR"
-          }
-        }
-      ]
-    }
-  }
-}
+```
+
+```json
+
 ```
 
 ## Sources
 
-1. <a id='graphql_spec'>[GraphQL Spec October2021](https://spec.graphql.org/October2021/)</a>
-2. <a id='graphql_arch_article1'>[howtographql.com: Big Picture (Architecture)](https://www.howtographql.com/basics/3-big-picture/>)</a>
-3. <a id='graphql_arch_article2'>[Solution Architects Guide to GraphQL](https://servian.dev/solution-architects-guide-to-graphql-2d513316e424)</a>
-4. <a id='graphql_intro'>[Introduction to GraphQL](https://graphql.org/learn/)</a>
-5. https://chanakaudaya.medium.com/graphql-based-solution-architecture-patterns-8905de6ff87e
-6. [GraphQL.org: Instrospection](https://graphql.org/learn/introspection/)
-7. [Apollo Server: Union and Interfaces](https://www.apollographql.com/docs/apollo-server/schema/unions-interfaces/)
-8. [12 Microservices Patterns I Wish I Knew Before the System Design Interview](https://levelup.gitconnected.com/12-microservices-pattern-i-wish-i-knew-before-the-system-design-interview-5c35919f16a2)
+- <a id='graphql_spec'>[GraphQL Spec October2021](https://spec.graphql.org/October2021/)</a>
+- <a id='graphql.org'>[graphql.org](https://graphql.org/learn)
+- <a id='graphql_arch_article1'>[howtographql.com: Big Picture (Architecture)](https://www.howtographql.com/basics/3-big-picture/>)</a>
+- <a id='graphql_arch_article2'>[Solution Architects Guide to GraphQL](https://servian.dev/solution-architects-guide-to-graphql-2d513316e424)</a>
+- <a id='graphql_intro'>[Introduction to GraphQL](https://graphql.org/learn/)</a>
+- <a id='graphql-arch-patterns'>[GraphQL-based Architecture Patterns](https://chanakaudaya.medium.com/graphql-based-solution-architecture-patterns-8905de6ff87e)
+- [GraphQL.org: Instrospection](https://graphql.org/learn/introspection/)
+- [Apollo Server: Union and Interfaces](https://www.apollographql.com/docs/apollo-server/schema/unions-interfaces/)
+- [12 Microservices Patterns I Wish I Knew Before the System Design Interview](https://levelup.gitconnected.com/12-microservices-pattern-i-wish-i-knew-before-the-system-design-interview-5c35919f16a2)
