@@ -1,6 +1,18 @@
-# Graphql 101
+# 1. Graphql 101
 
-## From the get go
+- [1. Graphql 101](#1-graphql-101)
+  - [1.1. From the get go](#11-from-the-get-go)
+  - [1.2. Overview](#12-overview)
+    - [1.2.1. (Partial) Language Overview](#121-partial-language-overview)
+    - [1.2.2. Fields and Field Resolvers](#122-fields-and-field-resolvers)
+    - [1.2.3. Fragments](#123-fragments)
+  - [1.3. Architecture Examples](#13-architecture-examples)
+    - [1.3.1. Authentication](#131-authentication)
+    - [1.3.2. Performance vs REST](#132-performance-vs-rest)
+  - [1.4. Instrospection](#14-instrospection)
+  - [1.5. Sources](#15-sources)
+
+## 1.1. From the get go
 
 - graphql is a **communication standard**
 - graphql is not a programing language
@@ -14,20 +26,21 @@
 - **data source Agnostic**
 "GraphQL does not mandate a particular programming language or storage system for application services that implement it"
 - **you get what you ask for**:
-    - GraphQL queries are **Field Sets**
-    - field -> function **field resolver**
+  - GraphQL queries are **Field Sets**
+  - field -> function **field resolver**
 
 GraphQL **principles**:
 
 1. Product-centric: ***GraphQL is unapologetically driven by the requirements of views and the front-end engineers that write them***.  
     - "Client First", me, 2023
-    - "designed to build client applications by providing an intuitive and flexible syntax and system for describing their data requirements and interactions.", GraphQL Spec, 2021
+    - >"designed to build client applications by providing an intuitive and flexible syntax and system for describing their data requirements and interactions."
+    GraphQL Spec, 2021
 2. Hierarchical
 3. Strong-typing
 4. Client-specified response
 5. Introspective
 
-## Overview
+## 1.2. Overview
 
 Its just HTTPS, auth whatever you like, client and server interact throught POST json body:
 
@@ -58,10 +71,10 @@ Its just HTTPS, auth whatever you like, client and server interact throught POST
     ```
 
 - subscription: a long-lived request that fetches data in response to source events.
-    - web sockets generally used
-    - supports EventDriven archs
+  - web sockets generally used
+  - supports EventDriven archs
 
-### (Partial) Language Overview
+### 1.2.1. (Partial) Language Overview
 
 For completeness, check <a href="#graphql_arch_article2">the GraphQL Spec Document</a>.
 
@@ -130,7 +143,7 @@ For completeness, check <a href="#graphql_arch_article2">the GraphQL Spec Docume
     }
     ```
 
-- input objects: 
+- input objects:
 
     ```graphql
       input Point2D {
@@ -143,7 +156,7 @@ For completeness, check <a href="#graphql_arch_article2">the GraphQL Spec Docume
       }
     ```
 
-### Fields and Field Resolvers
+### 1.2.2. Fields and Field Resolvers
 
 - [Selection Set](https://github.com/graphql/graphql-spec/blob/51337a9b820e296fa7d03ae77d534cb4b247c201/spec/Section%202%20--%20Language.md?plain=1#L326)
 
@@ -151,7 +164,7 @@ For completeness, check <a href="#graphql_arch_article2">the GraphQL Spec Docume
 
 ____
 
-### Fragments
+### 1.2.3. Fragments
 
 - primary unit of composition
 - recycle and reuse common pieces of queries
@@ -198,7 +211,7 @@ ____
       
   ```
 
-## Architecture Examples
+## 1.3. Architecture Examples
 
 <figure>
     <img src="./images/arch_lvl_1.png"
@@ -232,7 +245,6 @@ ____
     </figcaption>
 </figure>
 
-
 <figure>
     <img src="./images/BFF_diagram.png"
          alt="">
@@ -241,15 +253,15 @@ ____
     </figcaption>
 </figure>
 
-### Authentication
+### 1.3.1. Authentication
 
 A secure Server has some sort of Authentication:
 
 - Basic Auth: base64(user:password) (just dont use this)
     `curl --header "Authorization: Basic am9objpzZWNyZXQ=" my-website.com`
 - Bearer Tokens:
-    - JSON Web Tokens (JWT, normal RSA in payload + signature), header , payload + signature
-    - OAuth 2.0: 1 Authorization (email+pass, 3rdP Identity Provider) then Bearer is Session token.
+  - JSON Web Tokens (JWT, normal RSA in payload + signature), header , payload + signature
+  - OAuth 2.0: 1 Authorization (email+pass, 3rdP Identity Provider) then Bearer is Session token.
 
 <figure>
     <img src="./images/arch_w_auth.png"
@@ -259,7 +271,7 @@ A secure Server has some sort of Authentication:
     </figcaption>
 </figure>
 
-### Performance vs REST
+### 1.3.2. Performance vs REST
 
 - 1 field -> 1 resolver function
 - data batching on  the server in stead of client -> less http calls for same data
@@ -271,7 +283,7 @@ performance improvements in frontend:
 )
 ![image](./images/song_example_graphql.png)
 
-## Instrospection
+## 1.4. Instrospection
 
 ```graphql
 {
@@ -292,7 +304,7 @@ performance improvements in frontend:
 
 ```
 
-## Sources
+## 1.5. Sources
 
 - <a id='graphql_spec'>[GraphQL Spec October2021](https://spec.graphql.org/October2021/)</a>
 - <a id='graphql.org'>[graphql.org](https://graphql.org/learn)
